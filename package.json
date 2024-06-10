@@ -1,0 +1,20 @@
+{
+  "name": "mxchilli-hack",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "compile": "frida-compile src/index.ts -o dist/agent.js",
+    "execute": "frida -U -f com.slots.camel.casino.machines.vegas.rich.game -l ./dist/agent.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/frida-gum": "^18.7.0",
+    "frida-compile": "^16.4.1",
+    "frida-il2cpp-bridge": "^0.9.0"
+  }
+}
