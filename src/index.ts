@@ -16,17 +16,17 @@ function create_response(msg: string): Il2Cpp.Object {
   return response;
 }
 
-function set_bankroll(value: UInt64) {
+function set_bankroll(value: string) {
   const CasinoPrefsData = AssemblyCSharp.image.class("CasinoPrefsData");
-  CasinoPrefsData.method("saveTotalCoinsOnServer").invoke(value);
+  CasinoPrefsData.method("saveTotalCoinsOnServer").invoke(Number(value));
 }
 
-function set_level(level: UInt64, status: UInt64) {
+function set_level(level: string, status: string) {
   const AppEconomyManager = AssemblyCSharp.image.class("AppEconomyManager");
   let snapshot = Il2Cpp.MemorySnapshot.capture();
 
   snapshot.objects.filter(Il2Cpp.isExactly(AppEconomyManager)).forEach((instance: Il2Cpp.Object) => {
-    instance.method("setUserLevelOnLogin").invoke(level, status);
+    instance.method("setUserLevelOnLogin").invoke(Number(level), Number(status));
   });
 
   snapshot.free();
@@ -64,7 +64,7 @@ async function main() {
 
     switch (args![0]) {
       case "setlvl":
-        set_level(uint64(args![1]), uint64(args![2]));
+        set_level(args![1], args![2]);
         this.method("AddChatMessage").invoke(create_response("Level updated - go home to update"));
         break;
 
@@ -74,7 +74,7 @@ async function main() {
         break;
 
       case "setmoney":
-        set_bankroll(uint64(args![1]));
+        set_bankroll(args![1]);
         this.method("AddChatMessage").invoke(create_response("Restart game for bankroll to update"));
         break;
 
